@@ -1,11 +1,30 @@
 # Terraform/SPN
 
 Module for generating Azure Service Principals.
+
+___
+
+## Prerequisites
+
+A master SPN is needed in order to use this module. In addition to the normal "Contributor" role usually assigned to an SPN for Terraform, the master SPN that will be used for this module requires these additional roles/permissions.
+
+* **Application Administrator** role in Azure Active Directory. This allows the master SPN to create and manage application and SPN objects in Azure AD.
+* **User Access Administrator** role on the subscription/s. This allows the master SPN to manage access permissions on subscriptions and resource groups in Azure so it can grant managed SPNs access to the correct resources.
+
 ___
 
 ## Usage
 
-ADD USAGE DOCUMENTATION
+The module creates an application and SPN object, an SPN password with an expiration, and places the SPN ID and SECRET in KeyVault secrets.
+
+The module accepts a list of KeyVaults. The intention being you may want to store the secrets in a central KeyVault and then additionally store them in a KeyVault for a downstream application team.
+
+To use, call this module with the following inputs...
+
+* `spn_name`: The name for this SPN.
+* `spn_url`: The URL for the SPN.  Defaults to the SPN name.
+* `spn_password_expiry`: When to expire the SPN password in hours, relative to creation time. Defaults to one year (8760 hours)
+* `spn_key_vault_ids`: A list of keyvault IDs where the new SPN ID and SECRET will be stored.
 
 ___
 
